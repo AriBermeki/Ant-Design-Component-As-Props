@@ -1,4 +1,4 @@
-# Ant-Design-Component-As-Props
+# Ant Design Component as props
 <img align="center" src="logo.png" alt="aribermeki" />
 
 ## The List of all Ant Design Components
