@@ -1,7 +1,7 @@
 # Ant-Design-Component-As-Props
 <img align="center" src="waeaf.png" alt="aribermeki" />
 
-## The of all Components
+## The List of all Ant Design Components
 
 
     UIAffix,
