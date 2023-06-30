@@ -1,33 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'antd';
+import axios from 'axios';
 
 const UIButton = (props) => {
-  const { block, classNames, danger, disabled, ghost, href, htmlType, icon, loading, shape, size, styles, target, type } = props;
+  const [event, setEvent] = useState(props.callback_event);
+  const [child, setChild] = useState(props.childrn);
 
-  const handleClick = (event) => {
-    // Füge hier deine Logik für den Click-Event hinzu
-    console.log('Button wurde geklickt');
+  const {
+    block,
+    classNames,
+    danger,
+    disabled,
+    ghost,
+    href,
+    htmlType,
+    loading,
+    shape,
+    size,
+    styles,
+    target,
+    type
+  } = props;
+
+  const handelchange = (e) => {
+    console.log(e.target.className);
+    axios.post('http://localhost:8000/callback', { callback_event: event })
+      .then((response) => {
+        console.log('Callback gesendet', response);
+      })
+      .catch((error) => {
+        console.error('Fehler beim Senden des Callbacks', error);
+      });
   };
+
+  let childElements = null;
+  if (typeof child === 'string') {
+    childElements = child;
+  } else if (Array.isArray(child)) {
+    childElements = child.map((item, index) => <span key={index}>{item}</span>);
+  }
 
   return (
     <Button
-      block={block}
+      block={block === 'True'}
       className={classNames}
-      danger={danger}
-      disabled={disabled}
-      ghost={ghost}
+      danger={danger === 'True'}
+      disabled={disabled === 'True'}
+      ghost={ghost === 'True'}
       href={href}
       htmlType={htmlType}
-      icon={icon}
-      loading={loading}
+      loading={loading === 'True'}
       shape={shape}
       size={size}
       style={styles}
       target={target}
       type={type}
-      onClick={handleClick}
+      onClick={handelchange}
     >
-      {props.children}
+     {childElements}
     </Button>
   );
 };
