@@ -1,23 +1,41 @@
+import React from 'react';
 import { Affix } from 'antd';
 
-const UIAffix = (props) => {
-  const handleAffixChange = (affixed) => {
-    // Callback function for when Affix state is changed
-    console.log('Affix state changed:', affixed);
-  };
+class UIAffix extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <Affix
-      offsetBottom={props.offsetBottom} // Offset from the bottom of the viewport
-      offsetTop={props.offsetTop} // Offset from the top of the viewport
-      target={props.target} // Specifies the scrollable area DOM node
-      onChange={handleAffixChange} // Callback for when Affix state is changed
-      style={props.style} // Style for theUIffix  itself
-    >
-      {props.content}
-      
-    </Affix>
-  );
-};
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+
+  render() {
+    
+
+    return (
+      <Affix
+        offsetBottom={this.props.offsetBottom} // Use this.props
+        offsetTop={this.props.offsetTop} // Use this.props
+        target={this.props.target} // Use this.props
+        onChange={this.handleAffixChange}
+        style={this.props.style} // Use this.props
+      >
+        {/* Render children or content that you want to affix */}
+      </Affix>
+    );
+  }
+}
 
 export default UIAffix;

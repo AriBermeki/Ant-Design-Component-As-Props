@@ -1,31 +1,35 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
 
-const UIConfigProvider = ({
-  autoInsertSpaceInButton = true,
-  componentDisabled,
-  componentSize,
-  csp,
-  direction = 'ltr',
-  popupMatchSelectWidth,
-  popupOverflow,
-  form,
-  getPopupContainer = () => document.body,
-  getTargetContainer = () => window,
-  iconPrefixCls = 'anticon',
-  input,
-  select,
-  button,
-  locale,
-  prefixCls = 'ant',
-  renderEmpty,
-  space,
-  theme,
-  virtual,
-  children,
-}) => {
-  // Set the config using the provided properties
-  React.useEffect(() => {
+class UIConfigProvider extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    const {
+      autoInsertSpaceInButton = true,
+      componentDisabled,
+      componentSize,
+      csp,
+      direction = 'ltr',
+      popupMatchSelectWidth,
+      popupOverflow,
+      form,
+      getPopupContainer = () => document.body,
+      getTargetContainer = () => window,
+      iconPrefixCls = 'anticon',
+      input,
+      select,
+      button,
+      locale,
+      prefixCls = 'ant',
+      renderEmpty,
+      space,
+      theme,
+      virtual,
+    } = this.props;
+
     ConfigProvider.config({
       autoInsertSpaceInButton,
       componentDisabled,
@@ -48,9 +52,19 @@ const UIConfigProvider = ({
       theme,
       virtual,
     });
-  }, []);
+  }
 
-  return <ConfigProvider>{children}</ConfigProvider>;
-};
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+
+  render() {
+    const { children } = this.props;
+
+    return <ConfigProvider>{children}</ConfigProvider>;
+  }
+}
 
 export default UIConfigProvider;

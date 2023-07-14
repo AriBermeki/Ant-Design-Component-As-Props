@@ -1,33 +1,53 @@
 import React from 'react';
 import { Divider } from 'antd';
 
-const UIDivider = ({
-  children,
-  className,
-  dashed = false,
-  orientation = 'center',
-  orientationMargin,
-  plain = true,
-  style,
-  type = 'horizontal',
-}) => {
-  const dividerStyle = {
-    ...style,
-    margin: orientationMargin && (orientation === 'left' || orientation === 'right') ? `0 ${orientationMargin}` : undefined,
-  };
+class UIDivider extends React.Component {
+  constructor(props) {
+    super(props);
+    // Initialize state or bind methods here if needed
+  }
 
-  return (
-    <Divider
-      className={className}
-      dashed={dashed}
-      orientation={orientation}
-      plain={plain}
-      style={dividerStyle}
-      type={type}
-    >
-      {children}
-    </Divider>
-  );
-};
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  render() {
+    const {
+      children,
+      className,
+      dashed = false,
+      orientation = 'center',
+      orientationMargin,
+      plain = true,
+      style,
+      type = 'horizontal',
+    } = this.props;
+
+    const dividerStyle = {
+      ...style,
+      margin:
+        orientationMargin && (orientation === 'left' || orientation === 'right')
+          ? `0 ${orientationMargin}`
+          : undefined,
+    };
+
+    return (
+      <Divider
+        className={className}
+        dashed={dashed}
+        orientation={orientation}
+        plain={plain}
+        style={dividerStyle}
+        type={type}
+      >
+        {children}
+      </Divider>
+    );
+  }
+}
 
 export default UIDivider;

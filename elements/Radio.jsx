@@ -23,3 +23,8 @@ if (type === 'Radio') {
   } else {
     return null;
   }
+
+
+
+
+  // i want to convert it to a class component, you can do so using the class syntax and extending the React.Component 

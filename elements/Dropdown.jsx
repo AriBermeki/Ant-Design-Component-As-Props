@@ -1,44 +1,60 @@
+import React from 'react';
 import { Dropdown } from 'antd';
 
-const UIDropdown = (props) => {
-  const { 
-    arrow, 
-    autoAdjustOverflow, 
-    autoFocus, 
-    disabled, 
-    destroyPopupOnHide, 
-    dropdownRender, 
-    getPopupContainer, 
-    menu, 
-    overlayClassName, 
-    overlayStyle, 
-    placement, 
-    trigger, 
-    open, 
-    onOpenChange 
-    } = props;
+class UIDropdown extends React.Component {
+  constructor(props) {
+    super(props);
+    // Initialize state or bind methods here if needed
+  }
 
-  return (
-    <Dropdown
-      arrow={arrow}
-      autoAdjustOverflow={autoAdjustOverflow}
-      autoFocus={autoFocus}
-      disabled={disabled}
-      destroyPopupOnHide={destroyPopupOnHide}
-      dropdownRender={dropdownRender}
-      getPopupContainer={getPopupContainer}
-      menu={menu}
-      overlayClassName={overlayClassName}
-      overlayStyle={overlayStyle}
-      placement={placement}
-      trigger={trigger}
-      visible={open} // 'visible' prop was renamed to 'open' in version 4.23.0
-      onVisibleChange={onOpenChange} // 'onVisibleChange' prop was renamed to 'onOpenChange' in version 4.23.0
-    >
-      {/* Hier kommt der Inhalt des Dropdown-Triggers */}
-      <button>Dropdown öffnen</button>
-    </Dropdown>
-  );
-};
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  render() {
+    const {
+      arrow,
+      autoAdjustOverflow,
+      autoFocus,
+      disabled,
+      destroyPopupOnHide,
+      dropdownRender,
+      getPopupContainer,
+      menu,
+      overlayClassName,
+      overlayStyle,
+      placement,
+      trigger,
+      open, // Renamed prop from 'visible'
+      onOpenChange, // Renamed prop from 'onVisibleChange'
+    } = this.props;
+
+    return (
+      <Dropdown
+        arrow={arrow}
+        autoAdjustOverflow={autoAdjustOverflow}
+        autoFocus={autoFocus}
+        disabled={disabled}
+        destroyPopupOnHide={destroyPopupOnHide}
+        dropdownRender={dropdownRender}
+        getPopupContainer={getPopupContainer}
+        menu={menu}
+        overlayClassName={overlayClassName}
+        overlayStyle={overlayStyle}
+        placement={placement}
+        trigger={trigger}
+        open={open} // Renamed prop
+        onOpenChange={onOpenChange} // Renamed prop
+      >
+        {/* Hier kommt der Inhalt des Dropdown-Triggers */}
+        <button>Dropdown öffnen</button>
+      </Dropdown>
+    );
+  }
+}
 
 export default UIDropdown;

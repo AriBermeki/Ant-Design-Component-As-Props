@@ -1,8 +1,25 @@
 import { Mentions } from 'antd';
+import React from 'react';
 
 const { Option } = Mentions;
 
-const UIMentions = ({
+class UIMentions extends React.Component {
+  constructor(props) {
+    super(props);
+    // Initialize state or bind methods here if needed
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  
+  render() {
+  const {
   autoFocus,
   autoSize,
   defaultValue,
@@ -22,7 +39,8 @@ const UIMentions = ({
   onSearch,
   onSelect,
   options,
-}) => {
+  } = this.props;
+
   return (
     <Mentions
       autoFocus={autoFocus}
@@ -53,6 +71,7 @@ const UIMentions = ({
       ))}
     </Mentions>
   );
-};
+  }
+}
 
 export default UIMentions;
