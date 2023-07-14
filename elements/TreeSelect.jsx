@@ -1,29 +1,47 @@
 import React from 'react';
 import { TreeSelect } from 'antd';
 
-const UITreeSelect = () => {
-  const onChange = (value, label, extra) => {
+class UITreeSelect extends React.Component {
+  constructor(props) {
+    super(props);
+
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  onChange = (value, label, extra) => {
     // Handle onChange event
   };
 
-  const onDropdownVisibleChange = (open) => {
+  onDropdownVisibleChange = (open) => {
     // Handle onDropdownVisibleChange event
     console.log(open);
   };
 
-  const onSearch = (value) => {
+  onSearch = (value) => {
     // Handle onSearch event
   };
 
-  const onSelect = (value, node, extra) => {
+  onSelect = (value, node, extra) => {
     // Handle onSelect event
   };
 
-  const onTreeExpand = (expandedKeys) => {
+  onTreeExpand = (expandedKeys) => {
     // Handle onTreeExpand event
   };
 
-  const treeSelectProps = {
+  treeSelectProps = {
     allowClear: false,
     autoClearSearchValue: true,
     bordered: true,
@@ -70,14 +88,16 @@ const UITreeSelect = () => {
     treeNodeLabelProp: 'title',
     value: undefined,
     virtual: true,
-    onChange: onChange,
-    onDropdownVisibleChange: onDropdownVisibleChange,
-    onSearch: onSearch,
-    onSelect: onSelect,
-    onTreeExpand: onTreeExpand,
+    onChange: this.onChange,
+    onDropdownVisibleChange: this.onDropdownVisibleChange,
+    onSearch: this.onSearch,
+    onSelect: this.onSelect,
+    onTreeExpand: this.onTreeExpand,
   };
 
-  return <TreeSelect {...treeSelectProps} />;
-};
+  render() {
+    return <TreeSelect {...this.treeSelectProps} />;
+  }
+}
 
 export default UITreeSelect;

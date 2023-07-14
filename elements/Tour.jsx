@@ -1,41 +1,43 @@
 import React from 'react';
 import { Tour } from 'antd';
-//import { Steps } from 'antd';
 
+class UITour extends React.Component {
+  constructor(props) {
+    super(props);
 
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
 
-const UITour = ({
-  arrow,
-  placement,
-  onClose,
-  mask,
-  type,
-  open,
-  onChange,
-  current,
-  scrollIntoViewOptions,
-  indicatorsRender,
-  zIndex
-}) => {
-   
-  const handleClose = () => {
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  handleClose = () => {
     // Callback function when the tour is closed
-    if (onClose) {
-      onClose();
+    if (this.props.onClose) {
+      this.props.onClose();
     }
   };
 
-  const handleStepChange = (currentStep) => {
+  handleStepChange = (currentStep) => {
     // Callback function when the step changes
-    if (onChange) {
-      onChange(currentStep);
+    if (this.props.onChange) {
+      this.props.onChange(currentStep);
     }
   };
 
-  const renderIndicators = (currentStep, totalSteps) => {
+  renderIndicators = (currentStep, totalSteps) => {
     // Custom indicator rendering function
-    if (indicatorsRender) {
-      return indicatorsRender(currentStep, totalSteps);
+    if (this.props.indicatorsRender) {
+      return this.props.indicatorsRender(currentStep, totalSteps);
     }
     return (
       <div>
@@ -44,23 +46,36 @@ const UITour = ({
     );
   };
 
-  return (
-    <Tour
-      arrow={arrow}
-      placement={placement}
-      onClose={handleClose}
-      mask={mask}
-      type={type}
-      open={open}
-      onChange={handleStepChange}
-      current={current}
-      scrollIntoViewOptions={scrollIntoViewOptions}
-      indicatorsRender={renderIndicators}
-      zIndex={zIndex}
-    >
-      {/* Tour steps go here */}
-    </Tour>
-  );
-};
+  render() {
+    const {
+      arrow,
+      placement,
+      mask,
+      type,
+      open,
+      current,
+      scrollIntoViewOptions,
+      zIndex,
+    } = this.props;
+
+    return (
+      <Tour
+        arrow={arrow}
+        placement={placement}
+        onClose={this.handleClose}
+        mask={mask}
+        type={type}
+        open={open}
+        onChange={this.handleStepChange}
+        current={current}
+        scrollIntoViewOptions={scrollIntoViewOptions}
+        indicatorsRender={this.renderIndicators}
+        zIndex={zIndex}
+      >
+        {this.props.children}
+      </Tour>
+    );
+  }
+}
 
 export default UITour;

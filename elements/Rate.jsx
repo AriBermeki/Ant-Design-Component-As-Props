@@ -1,24 +1,47 @@
 import { Rate } from 'antd';
+import React from 'react';
 
-const UIRate = (props) => {
-    const {
-        allowClear,
-        allowHalf,
-        autoFocus,
-        character,
-        className,
-        count,
-        defaultValue,
-        disabled,
-        style,
-        tooltips,
-        value,
-        onBlur,
-        onChange,
-        onFocus,
-        onHoverChange,
-        onKeyDown
-    } = props
+class UIRate extends React.Component {
+  constructor(props) {
+    super(props);
+
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  
+  render() {
+  const {
+  allowClear,
+  allowHalf,
+  autoFocus,
+  character,
+  className,
+  count,
+  defaultValue,
+  disabled,
+  style,
+  tooltips,
+  value,
+  onBlur,
+  onChange,
+  onFocus,
+  onHoverChange,
+  onKeyDown,
+  } = this.props;
+
+
   return (
     <Rate
       allowClear={allowClear}
@@ -39,6 +62,7 @@ const UIRate = (props) => {
       onKeyDown={onKeyDown}
     />
   );
-};
+  }
+}
 
 export default UIRate;

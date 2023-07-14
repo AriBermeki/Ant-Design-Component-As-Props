@@ -1,7 +1,24 @@
 import React from 'react';
 import { Radio, RadioGroup } from 'antd';
 
-const UIRadio = ({ type, ...props }) => {
+class UIRadio extends React.Component {
+  constructor(props) {
+    super(props);
+    // Initialize state or bind methods here if needed
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  render() {
+  const { type, ...props } = this.props;
+
+
   if (type === 'Radio') {
     return <Radio {...props} />;
   } else if (type === 'RadioButton') {
@@ -11,20 +28,9 @@ const UIRadio = ({ type, ...props }) => {
   } else {
     return null;
   }
-};
+  }
+}
 
 export default UIRadio;
-if (type === 'Radio') {
-    return < Radio{...restProps} />;
-  } else if (type === 'RadioButton') {
-    return <TRadio.Button{...restProps} />;
-  } else if (type === 'RadioGroup') {
-    return < RadioGroup{...restProps} />;
-  } else {
-    return null;
-  }
 
 
-
-
-  // i want to convert it to a class component, you can do so using the class syntax and extending the React.Component 

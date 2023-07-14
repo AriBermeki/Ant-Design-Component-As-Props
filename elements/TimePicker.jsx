@@ -5,40 +5,29 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
+class UITimePicker extends React.Component {
+  constructor(props) {
+    super(props);
 
-const UITimePicker = (props) => {
-    const {
-        allowClear,
-        autoFocus,
-        bordered,
-        defaultValue,
-        changeOnBlur,
-        className,
-        clearIcon,
-        clearText,
-        disabled,
-        format,
-        hideDisabledOptions,
-        hourStep,
-        open,
-        placeholder,
-        placement,
-        minuteStep,
-        inputReadOnly,
-        secondStep,
-        value,
-        showNow,
-        size,
-        status,
-        popupClassName,
-        suffixIcon,
-        use12Hours,
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
 
-    } = props
-  const mydefaultValue = dayjs(defaultValue);
+  componentDidMount() {
+    console.log('Component mounted');
+  }
 
-  const disabledTime = (now) => {
-    // Hier kannst du die Funktion anpassen, um die gewünschten Zeitbeschränkungen festzulegen
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  mydefaultValue = dayjs(this.props.defaultValue);
+
+  disabledTime = (now) => {
+    // Customize the function to set the desired time restrictions
     return {
       disabledHours: () => [1, 2, 3],
       disabledMinutes: () => [10, 20, 30],
@@ -46,69 +35,96 @@ const UITimePicker = (props) => {
     };
   };
 
+  getPopupContainer = (trigger) => trigger.parentNode;
 
-  const getPopupContainer = (trigger) => trigger.parentNode;
+  popupStyle = { zIndex: 9999 };
 
-  const popupStyle = { zIndex: 9999 };
-  const renderExtraFooter = () => null;
+  renderExtraFooter = () => null;
 
-
-  const onChange = (time, timeString) => {
-    // Hier kannst du die gewählte Zeit verarbeiten
+  onChange = (time, timeString) => {
+    // Process the selected time
     console.log('Selected Time:', time);
     console.log('Formatted Time String:', timeString);
   };
 
-  const onOpenChange = (open) => {
-    // Hier kannst du den Öffnungszustand des Panels verarbeiten
+  onOpenChange = (open) => {
+    // Process the panel open state
     console.log('Panel Open:', open);
   };
 
-  const onSelect = (time) => {
-    // Hier kannst du die Auswahl einer Zeit verarbeiten
+  onSelect = (time) => {
+    // Process the selection of a time
     console.log('Selected Time:', time);
   };
 
-  return (
-    <TimePicker
-      defaultValue={mydefaultValue}
-      allowClear={allowClear}
-      autoFocus={autoFocus}
-      bordered={bordered}
-      changeOnBlur={changeOnBlur}
-      className={className}
-      clearIcon={clearIcon}
-      clearText={clearText}
-      disabled={disabled}
-      disabledTime={disabledTime}
-      format={format}
-      getPopupContainer={getPopupContainer}
-      hideDisabledOptions={hideDisabledOptions}
-      hourStep={hourStep}
-      inputReadOnly={inputReadOnly}
-      minuteStep={minuteStep}
-      open={open}
-      placeholder={placeholder}
-      placement={placement}
-      popupClassName={popupClassName}
-      popupStyle={popupStyle}
-      renderExtraFooter={renderExtraFooter}
-      secondStep={secondStep}
-      showNow={showNow}
-      size={size}
-      status={status}
-      suffixIcon={suffixIcon}
-      use12Hours={use12Hours}
-      value={value}
-      onChange={onChange}
-      onOpenChange={onOpenChange}
-      onSelect={onSelect}
-    />
-  );
-};
+  render() {
+    const {
+      allowClear,
+      autoFocus,
+      bordered,
+      changeOnBlur,
+      className,
+      clearIcon,
+      clearText,
+      disabled,
+      format,
+      hideDisabledOptions,
+      hourStep,
+      inputReadOnly,
+      minuteStep,
+      open,
+      placeholder,
+      placement,
+      popupClassName,
+      secondStep,
+      showNow,
+      size,
+      status,
+      suffixIcon,
+      use12Hours,
+      value,
+    } = this.props;
+
+    return (
+      <TimePicker
+        defaultValue={this.mydefaultValue}
+        allowClear={allowClear}
+        autoFocus={autoFocus}
+        bordered={bordered}
+        changeOnBlur={changeOnBlur}
+        className={className}
+        clearIcon={clearIcon}
+        clearText={clearText}
+        disabled={disabled}
+        disabledTime={this.disabledTime}
+        format={format}
+        getPopupContainer={this.getPopupContainer}
+        hideDisabledOptions={hideDisabledOptions}
+        hourStep={hourStep}
+        inputReadOnly={inputReadOnly}
+        minuteStep={minuteStep}
+        open={open}
+        placeholder={placeholder}
+        placement={placement}
+        popupClassName={popupClassName}
+        popupStyle={this.popupStyle}
+        renderExtraFooter={this.renderExtraFooter}
+        secondStep={secondStep}
+        showNow={showNow}
+        size={size}
+        status={status}
+        suffixIcon={suffixIcon}
+        use12Hours={use12Hours}
+        value={value}
+        onChange={this.onChange}
+        onOpenChange={this.onOpenChange}
+        onSelect={this.onSelect}
+      />
+    );
+  }
+}
 
 export default UITimePicker;
-
 
 
 // const defaultValue = dayjs('13:30:56', 'HH:mm:ss');

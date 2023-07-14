@@ -1,50 +1,70 @@
 import React from 'react';
 import { Switch } from 'antd';
 
-const UISwitch = (props) => {
-  const { 
-    autoFocus, 
-    checked, 
-    checkedChildren, 
-    className, 
-    defaultChecked, 
-    disabled, 
-    loading, 
-    size, 
-    unCheckedChildren, 
-    onChange, 
-    onClick 
-    } = props;
+class UISwitch extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleOnChange = (checked, event) => {
-    // Hier kannst du die gewünschte Aktion ausführen, wenn sich der Zustand ändert
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  handleOnChange = (checked, event) => {
+    // Perform the desired action when the state changes
+    const { onChange } = this.props;
     if (onChange) {
       onChange(checked, event);
     }
   };
 
-  const handleOnClick = (checked, event) => {
-    // Hier kannst du die gewünschte Aktion ausführen, wenn der Switch geklickt wird
+  handleOnClick = (checked, event) => {
+    // Perform the desired action when the switch is clicked
+    const { onClick } = this.props;
     if (onClick) {
       onClick(checked, event);
     }
   };
 
-  return (
-    <Switch
-      autoFocus={autoFocus}
-      checked={checked}
-      checkedChildren={checkedChildren}
-      className={className}
-      defaultChecked={defaultChecked}
-      disabled={disabled}
-      loading={loading}
-      size={size}
-      unCheckedChildren={unCheckedChildren}
-      onChange={handleOnChange}
-      onClick={handleOnClick}
-    />
-  );
-};
+  render() {
+    const {
+      autoFocus,
+      checked,
+      checkedChildren,
+      className,
+      defaultChecked,
+      disabled,
+      loading,
+      size,
+      unCheckedChildren,
+    } = this.props;
+
+    return (
+      <Switch
+        autoFocus={autoFocus}
+        checked={checked}
+        checkedChildren={checkedChildren}
+        className={className}
+        defaultChecked={defaultChecked}
+        disabled={disabled}
+        loading={loading}
+        size={size}
+        unCheckedChildren={unCheckedChildren}
+        onChange={this.handleOnChange}
+        onClick={this.handleOnClick}
+      />
+    );
+  }
+}
 
 export default UISwitch;

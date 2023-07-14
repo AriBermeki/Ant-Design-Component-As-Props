@@ -1,55 +1,58 @@
+import React from 'react';
 import { Tag } from 'antd';
 
-const UITag = (props) => {
-  const { closable, closeIcon, color, icon, bordered, onClose, checked, onChange } = props;
+class UITag extends React.Component {
+  constructor(props) {
+    super(props);
 
-  if (checked !== undefined) {
-    return (
-      <Tag.CheckableTag
-        checked={checked}
-        onChange={onChange}
-      >
-        {props.children}
-      </Tag.CheckableTag>
-    );
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
   }
 
-  return (
-    <Tag
-      closable={closable}
-      closeIcon={closeIcon}
-      color={color}
-      icon={icon}
-      bordered={bordered}
-      onClose={onClose}
-    >
-      {props.children}
-    </Tag>
-  );
-};
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  render() {
+    const {
+      closable,
+      closeIcon,
+      color,
+      icon,
+      bordered,
+      onClose,
+      checked,
+      onChange,
+    } = this.props;
+
+    if (checked !== undefined) {
+      return (
+        <Tag.CheckableTag checked={checked} onChange={onChange}>
+          {this.props.children}
+        </Tag.CheckableTag>
+      );
+    }
+
+    return (
+      <Tag
+        closable={closable}
+        closeIcon={closeIcon}
+        color={color}
+        icon={icon}
+        bordered={bordered}
+        onClose={onClose}
+      >
+        {this.props.children}
+      </Tag>
+    );
+  }
+}
 
 export default UITag;
-
-
-
-// import React from 'react';
-// import UITag from './UITag';
-
-// const App = () => {
-//   return (
-//     <div>
-//       <UITag closable={true} onClose={() => console.log('Tag closed')}>
-//         Tag 1
-//       </UITag>
-
-//       <UITag
-//         checked={true}
-//         onChange={(checked) => console.log('Tag checked:', checked)}
-//       >
-//         Tag 2
-//       </UITag>
-//     </div>
-//   );
-// };
-
-// export default App;

@@ -3,32 +3,27 @@ import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const UITabs = (props) => {
-  const {
-    activeKey,
-    addIcon,
-    animated,
-    centered,
-    defaultActiveKey,
-    hideAdd,
-    items,
-    moreIcon,
-    popupClassName,
-    renderTabBar,
-    size,
-    tabBarExtraContent,
-    tabBarGutter,
-    tabBarStyle,
-    tabPosition,
-    destroyInactiveTabPane,
-    type,
-    onChange,
-    onEdit,
-    onTabClick,
-    onTabScroll
-  } = props;
+class UITabs extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const renderTabContent = () => {
+    if (props.onChange) {
+      this.handleAffixChange = () => {
+        console.log('Affix handleAffixChange!');
+      };
+    }
+  }
+
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('Component will unmount');
+    // Perform cleanup or other actions before the component is unmounted
+  }
+  renderTabContent = () => {
+    const { items } = this.props;
     return items.map((item) => (
       <TabPane
         key={item.key}
@@ -43,78 +38,57 @@ const UITabs = (props) => {
     ));
   };
 
-  return (
-    <Tabs
-      activeKey={activeKey}
-      addIcon={addIcon}
-      animated={animated}
-      centered={centered}
-      defaultActiveKey={defaultActiveKey}
-      hideAdd={hideAdd}
-      moreIcon={moreIcon}
-      popupClassName={popupClassName}
-      renderTabBar={renderTabBar}
-      size={size}
-      tabBarExtraContent={tabBarExtraContent}
-      tabBarGutter={tabBarGutter}
-      tabBarStyle={tabBarStyle}
-      tabPosition={tabPosition}
-      destroyInactiveTabPane={destroyInactiveTabPane}
-      type={type}
-      onChange={onChange}
-      onEdit={onEdit}
-      onTabClick={onTabClick}
-      onTabScroll={onTabScroll}
-    >
-      {renderTabContent()}
-    </Tabs>
-  );
-};
+  render() {
+    const {
+      activeKey,
+      addIcon,
+      animated,
+      centered,
+      defaultActiveKey,
+      hideAdd,
+      moreIcon,
+      popupClassName,
+      renderTabBar,
+      size,
+      tabBarExtraContent,
+      tabBarGutter,
+      tabBarStyle,
+      tabPosition,
+      destroyInactiveTabPane,
+      type,
+      onChange,
+      onEdit,
+      onTabClick,
+      onTabScroll,
+    } = this.props;
+
+    return (
+      <Tabs
+        activeKey={activeKey}
+        addIcon={addIcon}
+        animated={animated}
+        centered={centered}
+        defaultActiveKey={defaultActiveKey}
+        hideAdd={hideAdd}
+        moreIcon={moreIcon}
+        popupClassName={popupClassName}
+        renderTabBar={renderTabBar}
+        size={size}
+        tabBarExtraContent={tabBarExtraContent}
+        tabBarGutter={tabBarGutter}
+        tabBarStyle={tabBarStyle}
+        tabPosition={tabPosition}
+        destroyInactiveTabPane={destroyInactiveTabPane}
+        type={type}
+        onChange={onChange}
+        onEdit={onEdit}
+        onTabClick={onTabClick}
+        onTabScroll={onTabScroll}
+      >
+        {this.renderTabContent()}
+      </Tabs>
+    );
+  }
+}
 
 export default UITabs;
-
-
-
-
-// import React from 'react';
-// import MyTabs from './MyTabs';
-
-// const App = () => {
-//   const items = [
-//     {
-//       key: '1',
-//       closable: true,
-//       closeIcon: <CloseOutlined />,
-//       disabled: false,
-//       forceRender: false,
-//       label: 'Tab 1',
-//       children: <div>Content for Tab 1</div>
-//     },
-//     {
-//       key: '2',
-//       closable: true,
-//       closeIcon: <CloseOutlined />,
-//       disabled: false,
-//       forceRender: false,
-//       label: 'Tab 2',
-//       children: <div>Content for Tab 2</div>
-//     }
-//   ];
-
-//   const handleTabChange = (key) => {
-//     console.log('Active tab changed:', key);
-//   };
-
-//   return (
-//     <div>
-//       <MyTabs
-//         activeKey="1"
-//         items={items}
-//         type="editable-card"
-//         onChange={handleTabChange}
-//       />
-//     </div>
-//   );
-// };
-
-// export default App;
