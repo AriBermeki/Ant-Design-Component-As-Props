@@ -1,40 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {UIAnchor} from './components/index.jsx';
+import { Layout } from 'antd';
 
-const loadAntdComponent = async (componentName) => {
-  const antd = await import('antd');
-  return antd[componentName];
-};
 
 const AntdComponentMap = {};
 const AntdIconsMap = {};
-const G2PlotChartsMap = {};
+const AntdChartsMap = {};
 
-const loadAntdIcons = async (iconName) => {
+const loadAntdComponent = async (componentName) => {
+  const antd = await import('./components/index.jsx');
+  return antd[componentName];
+};
+
+const loadAntdIconComponent = async (iconName) => {
   if (!AntdIconsMap[iconName]) {
-    const icons = await import('@ant-design/icons');
+    const icons = await import('./components/index.jsx');
     AntdIconsMap[iconName] = icons[iconName];
   }
   return AntdIconsMap[iconName];
 };
 
-const loadG2PlotChart = async (chartName) => {
-  if (!G2PlotChartsMap[chartName]) {
-    const G2Plot = await import('@antv/g2plot');
-    G2PlotChartsMap[chartName] = G2Plot[chartName];
+const loadG2PlotChartComponent = async (chartName) => {
+  if (!AntdChartsMap[chartName]) {
+    const G2Plot = await import('./components/index.jsx');
+    AntdChartsMap[chartName] = G2Plot[chartName];
   }
-  return G2PlotChartsMap[chartName];
+  return AntdChartsMap[chartName];
 };
 
-const isVoidElement = (componentName) => [
-  'Input',
-  'InputNumber',
-  'TextArea',
-  'InputPassword',
-  'InputSearch',
-  'ColorPicker',
-  'Mentions',
-  'Collapse',
-].includes(componentName);
 
 const stylesMap = (styles) => {
   let mappedStyles = {};
@@ -47,48 +40,107 @@ const stylesMap = (styles) => {
   return mappedStyles;
 };
 
-const DynamicAntdComponent = ({ componentName, icon, chart, styles, ...props }) => {
-  const [AntdComponent, setAntdComponent] = useState(null);
 
-  useState(async () => {
-    if (!AntdComponent) {
-      if (!AntdComponentMap[componentName]) {
-        AntdComponentMap[componentName] = await loadAntdComponent(componentName);
+
+const isVoidElement = (componentName) => [
+  'UIInput',
+  'UIInputNumber',
+  'UICalendar',
+  'UITextArea',
+  
+ 
+  
+  
+].includes(componentName);
+
+const DynamicAntdComponent = ({ component, props: componentProps, content }) => {
+  const [AntdComponent, setAntdComponent] = useState(null);
+  const [AntdIcon, setAntdIcon] = useState(null);
+  const [AntdChart, setAntdChart] = useState(null);
+
+  useEffect(() => {
+    const loadComponent = async () => {
+      if (!AntdComponent) {
+        if (!AntdComponentMap[component]) {
+          AntdComponentMap[component] = await loadAntdComponent(component);
+        }
+        setAntdComponent(AntdComponentMap[component]); // Hier den-Export der Komponente verwenden
       }
-      setAntdComponent(AntdComponentMap[componentName]);
-    }
-  }, [componentName, AntdComponent]);
+    };
+    const loadicon = async () => {
+      if (!AntdIcon) {
+        if (!AntdIconsMap[component]) {
+          AntdIconsMap[component] = await loadAntdIconComponent(component);
+        }
+        setAntdIcon(AntdIconsMap[component]); // Hier den-Export der Komponente verwenden
+      }
+    };
+    const loadchart = async () => {
+      if (!AntdChart) {
+        if (!AntdChartsMap[component]) {
+          AntdChartsMap[component] = await loadG2PlotChartComponent(component);
+        }
+        setAntdChart(AntdChartsMap[component]); // Hier den-Export der Komponente verwenden
+      }
+    };
+
+    loadComponent();
+    loadicon();
+    loadchart();
+  }, [component, AntdComponent, AntdChart,AntdIcon]);
 
   if (!AntdComponent) {
-    return <div>Loading...</div>;
+    
+    return null;
   }
 
-  if (icon) {
-    loadAntdIcons(icon); // Lade das Ant Design Icon dynamisch
-  }
+  const componentStyles = stylesMap(componentProps.styles); // Wandle die Styles in ein Objekt um
 
-  if (chart) {
-    loadG2PlotChart(chart); // Lade das G2Plot Chart dynamisch
-  }
+  // Check if the component is a void element
+  const isVoid = isVoidElement(component);
+  const jsx =isVoid ? ( React.createElement(AntdComponent, componentProps)) : (
+    <AntdComponent {...componentProps} style={componentStyles}>
+      {content &&
+        content.map((child, index) => (
+          <DynamicAntdComponent key={index} {...child} />
+        ))}
+    </AntdComponent>
+  );
+  // Render the component using appropriate syntax based on void element
+  return jsx
+}
 
-  const componentStyles = stylesMap(styles); // Wandle die Styles in ein Objekt um
 
-  // Überprüfen, ob es sich um ein Void-Element handelt und nur die Props übergeben
-  return isVoidElement(componentName) ? React.createElement(AntdComponent, props) : <AntdComponent {...props} style={componentStyles} />;
-};
+
+
+
 
 const App = () => {
+  const jsonObject = {
+    "component": "UILayout",
+    "props": {},
+    "content": [
+      "Textknoten",
+      {
+        "component": "UISlider",
+        "props": {}, // Empty object as props
+        "content": []
+      },
+    
+    ]
+  };
+  
+  
   return (
     <div>
-      <DynamicAntdComponent componentName="Button" type="primary" styles={[{ name: 'padding', value: '10px' }]}>
-        Click Me
-      </DynamicAntdComponent>
-      <DynamicAntdComponent componentName="DatePicker" onChange={(date, dateString) => console.log(dateString)} />
-      <DynamicAntdComponent componentName="Input" styles={[{ name: 'border', value: '1px solid #ccc' }]} />
-      <DynamicAntdComponent componentName="Select" />
-      <DynamicAntdComponent componentName="Table" columns={[]} dataSource={[]} styles={[{ name: 'border', value: '1px solid #ccc' }]} />
-      <DynamicAntdComponent componentName="Bar" chart="bar" styles={[{ name: 'color', value: '#007bff' }]} />
-      <DynamicAntdComponent componentName="Line" chart="line" styles={[{ name: 'color', value: '#ff0000' }]} />
+      <Layout>
+        <DynamicAntdComponent {...jsonObject} />
+        
+        
+      </Layout>
+      
+      
+      
     </div>
   );
 };
