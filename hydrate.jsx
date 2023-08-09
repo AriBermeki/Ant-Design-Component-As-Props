@@ -1,6 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import {UIAnchor} from './components/index.jsx';
-import { Layout } from 'antd';
+import './App.css';
+import React, { useEffect, useState, useMemo} from 'react';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+import { Layout, notification,  ColorPicker} from 'antd';
+//import {renderComponent} from './core/render_';
+import { Bar } from '@antv/g2plot';
+import {
+  RadiusBottomleftOutlined,
+  RadiusBottomrightOutlined,
+  RadiusUpleftOutlined,
+  RadiusUprightOutlined,
+  dsgtrgertgergr,
+  TeamOutlined 
+} from '@ant-design/icons';
+//import {BarChart} from './data/UIBar';
+const { Content } = Layout;
+
+
+
 
 
 const AntdComponentMap = {};
@@ -8,13 +25,13 @@ const AntdIconsMap = {};
 const AntdChartsMap = {};
 
 const loadAntdComponent = async (componentName) => {
-  const antd = await import('./components/index.jsx');
+  const antd = await import('antd');
   return antd[componentName];
 };
 
 const loadAntdIconComponent = async (iconName) => {
   if (!AntdIconsMap[iconName]) {
-    const icons = await import('./components/index.jsx');
+    const icons = await import('@ant-design/icons');
     AntdIconsMap[iconName] = icons[iconName];
   }
   return AntdIconsMap[iconName];
@@ -22,7 +39,7 @@ const loadAntdIconComponent = async (iconName) => {
 
 const loadG2PlotChartComponent = async (chartName) => {
   if (!AntdChartsMap[chartName]) {
-    const G2Plot = await import('./components/index.jsx');
+    const G2Plot = await import('@antv/g2plot');
     AntdChartsMap[chartName] = G2Plot[chartName];
   }
   return AntdChartsMap[chartName];
@@ -43,7 +60,7 @@ const stylesMap = (styles) => {
 
 
 const isVoidElement = (componentName) => [
-  'UIInput',
+  'Input',
   'UIInputNumber',
   'UICalendar',
   'UITextArea',
@@ -90,25 +107,35 @@ const DynamicAntdComponent = ({ component, props: componentProps, content }) => 
   }, [component, AntdComponent, AntdChart,AntdIcon]);
 
   if (!AntdComponent) {
-    
     return null;
   }
 
-  const componentStyles = stylesMap(componentProps.styles); // Wandle die Styles in ein Objekt um
-
-  // Check if the component is a void element
+  const componentStyles = stylesMap(componentProps.styles);
   const isVoid = isVoidElement(component);
-  const jsx =isVoid ? ( React.createElement(AntdComponent, componentProps)) : (
+
+  let renderedContent = null;
+  if (typeof content === 'string') {
+    renderedContent = content;
+  } else if (Array.isArray(content)) {
+    renderedContent = content.map((child, index) => (
+      // Handle text nodes or nested components here
+      typeof child === 'string' ? child : (
+        <DynamicAntdComponent key={index} {...child} />
+      )
+    ));
+  }
+
+  const jsx = isVoid ? (
+    React.createElement(AntdComponent, componentProps, renderedContent)
+  ) : (
     <AntdComponent {...componentProps} style={componentStyles}>
-      {content &&
-        content.map((child, index) => (
-          <DynamicAntdComponent key={index} {...child} />
-        ))}
+      {renderedContent}
     </AntdComponent>
   );
-  // Render the component using appropriate syntax based on void element
-  return jsx
-}
+
+  return jsx;
+};
+
 
 
 
@@ -117,14 +144,18 @@ const DynamicAntdComponent = ({ component, props: componentProps, content }) => 
 
 const App = () => {
   const jsonObject = {
-    "component": "UILayout",
-    "props": {},
+    "component": "Layout",
+    "props": {
+      
+    },
     "content": [
       "Textknoten",
       {
-        "component": "UISlider",
-        "props": {}, // Empty object as props
-        "content": []
+        "component": "Button",
+        "props": {
+          "type":"primary"
+        }, // Empty object as props
+        "content": ["hallo"]
       },
     
     ]
